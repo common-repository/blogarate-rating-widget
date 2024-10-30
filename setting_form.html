@@ -1,0 +1,85 @@
+<script type="text/javascript" charset="utf-8">
+	$ = jQuery;
+	$(function(){
+		/*$.fn.makeajaxform = function(){
+			this.submit(function(){
+				pictures = $(this).find("input[type=file]");
+				console.log(pictures[0]);
+				return false;
+				});
+			}*/
+		$.fn.blogarate_acceptable_type = /\.jpg|\.gif|\.png|\.jpeg/i;
+		$.fn.makefilechange = function()
+		{
+			$(this).find("input[type=file]").change(
+				function(){
+					for(var i = 0; i < this.files.length; i++){
+						filename = this.files[i].fileName;
+						ext = filename.substr(filename.lastIndexOf("."),filename.length);
+						valid = filename.search($.fn.blogarate_acceptable_type);
+						if(valid == -1){
+							this.value = "";
+							$(this).after("<div style=\"width:340px; display:none; overflow:hidden; border:1px solid; padding:1px 1px 1px 1px; color:#000000; border-color:#8D7A00; background-color:#FFF190;\"><p align=\"Center\">We do not accept the extension '" + ext + "'!</p></div>");
+							$(this).next("div").slideDown().animate({opacity: 1.0}, 5000).fadeOut(1500);
+						}
+					}
+				}
+			)
+		}
+		$.error_message = function(){
+			$(".blogarate_error_message").each(function(){
+				if($(this).find("p").html()){
+					$(this).fadeIn().animate({opacity:1.0}, 5000).fadeOut();
+				};
+				});
+		}
+	});
+	
+	$(document).ready(function(){
+		$("#blogarate_form").makefilechange();
+		$.error_message();
+		//$(".blogarate_error_message").hide(0).fadeIn().fadeOut(10000);
+	});
+</script>
+<div class='wrap'>
+	<h2>User Style Widget Settings</h2>
+	<form method="post" id="blogarate_form" name="blogarate_form" enctype="multipart/form-data">
+	<table class="form-table">
+		<tbody><tr valign="top">
+			<th scope="row">Avatars</th>
+			<td>
+				<fieldset><legend>Do you want to show avatars on Blogarate Widgets?</legend>
+					<p>
+					<label>
+					<input type="radio" class="tog" value="1" name="blogarate_avatar" %%YESAVATAR%%/>Yes</label>
+					</p>
+					<p>
+					<label>
+					<input type="radio" class="tog" value="0" name="blogarate_avatar" %%NOAVATAR%%/>No</label>
+					</p>
+					</fieldset>
+			</td>
+			</tr>
+	<tr valign="top">
+	<th scope="row"><label for="posts_per_page">Custom icons</label></th>
+	<td>
+	<fieldset><legend>Upload your custom icon here.</legend>
+	<div style="width:340px; display:none; overflow:hidden; border:1px solid; padding:1px 1px 1px 1px; color:#000000; border-color:#8D7A00; background-color:#FFF190;" class="blogarate_error_message"><p align="Center"><!-filemessage-></p></div>
+	<p><label><b>Full Icon: <!-IMGFULL-></b></label><div><input type="file" size="30" value="10" id="eicons" name="Full"/></div></p>
+	<p><label><b>Empty icon: <!-IMGEMPTY-></b></label><div><input type="file" size="30" value="10" id="ficons" name="Empty"/></div></p>
+	<!-NOGDLIBARARY->
+	<p><input type="checkbox" size="30" id="uswcheckbox" name="usw" %%USWCHECK%%/> Use custom icons</p>
+	<p><h3>Icon guidelines:</h3></p>
+	<h4>Icons have to be in these file format: .jpg, .gif or .png</h4>
+	<h4>Icons dimensions have to be smaller than 100 x 100</h4>
+	</td>
+	</tr>
+	
+	</tbody></table>
+	<p class="submit">
+	<input id="blogarate_form_bt" type="submit" value="Save Changes" name="Submit"/>
+	<input type="submit" value="Reset to default" name="Submit"/>
+	</p>
+	</fieldset>
+	</form>
+</div>
